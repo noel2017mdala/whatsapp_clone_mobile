@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -22,6 +23,11 @@ const Stack = createStackNavigator();
 const NavigateSignIn = ({ navigation }) => {};
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+  const select = useSelector((e) => {
+    return e;
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -51,8 +57,6 @@ const Navigation = () => {
   );
 };
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   return (
     <GradientContainer style={[tw`bg-white h-full`, styles.container]}>
       <View

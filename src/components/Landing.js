@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -14,17 +15,23 @@ import Icon from "react-native-vector-icons/SimpleLineIcons";
 import SearchICon from "react-native-vector-icons/EvilIcons";
 import Loader from "./Loader";
 import TabsContainer from "./TabsContainer";
+
+import { generateTokens, generateUserData } from "../Redux/Actions/LoginAction";
 const Tab = createMaterialTopTabNavigator();
 
-const Landing = () => {
+const Landing = (props) => {
   const [appLoaded, setAppLoaded] = useState(false);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    dispatch(generateTokens(props));
+    dispatch(generateUserData(props));
     stopLoad();
   }, []);
 
   const stopLoad = () => {
-    setTimeout(() => setAppLoaded(true), 4000);
+    setTimeout(() => setAppLoaded(true), 2000);
   };
 
   if (!appLoaded) return <Loader />;

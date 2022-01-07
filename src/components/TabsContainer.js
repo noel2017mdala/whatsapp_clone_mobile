@@ -15,6 +15,7 @@ import Camera from "./Camera";
 import Chats from "./Chats";
 import Status from "./Status";
 import Calls from "./Calls";
+import Groups from "./Groups";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -51,8 +52,9 @@ const TabsContainer = () => {
           name="Camera"
         />
         <Tab.Screen name="Chats" component={Chats} />
-        <Tab.Screen component={Status} name="Status" />
-        <Tab.Screen component={Calls} name="Calls" />
+        {/* <Tab.Screen name="Group" component={Groups} /> */}
+        <Tab.Screen name="Status" component={Status} />
+        <Tab.Screen name="Calls" component={Calls} />
       </Tab.Navigator>
     </NavigationContainer>
   );

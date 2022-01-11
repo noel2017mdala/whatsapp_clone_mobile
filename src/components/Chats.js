@@ -10,7 +10,9 @@ import {
   FlatList,
   RefreshControl,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
+import Modal from "react-native-modal";
 import tw from "tailwind-react-native-classnames";
 import { fetchContactList } from "../Redux/Actions/FetchUser";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -18,6 +20,8 @@ import formatTime from "../utils/DateFormater";
 
 const Chat = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalData, setModalData] = useState({});
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -37,6 +41,107 @@ const Chat = ({ navigation }) => {
         },
       ]}
     >
+      {/* <View style={[tw`bg-red-400 w-2/4 shadow-sm absolute  z-10 `]}>
+        <Text>Modal</Text>
+      </View> */}
+
+      <View>
+        <Modal
+          isVisible={modalVisible}
+          backdropOpacity={0.4}
+          animationIn="fadeIn"
+          animationOut="fadeOut"
+          onBackButtonPress={() => {
+            setModalVisible(false);
+            setModalData({});
+          }}
+          onBackdropPress={() => {
+            setModalVisible(false);
+            setModalData({});
+          }}
+          backdropTransitionOutTiming={100}
+        >
+          <View style={{ flex: 1 }}>
+            <View
+              style={[
+                tw`bg-white h-1/2  w-3/4  mx-auto my-20 flex flex-col relative`,
+                {},
+              ]}
+            >
+              <View
+                style={[
+                  tw`pb-3 absolute z-10  right-0  left-0`,
+                  {
+                    backgroundColor: "rgba(0, 0, 0, 0.3);",
+                  },
+                ]}
+              >
+                <Text style={[tw`text-white text-lg ml-2 mt-2`]}>
+                  {modalData.userDetails ? modalData.userDetails.name : null}
+                </Text>
+              </View>
+              <ImageBackground
+                source={{
+                  uri: `http://192.168.43.193:8000/api/v1/users/getImage/${
+                    modalData.userDetails
+                      ? modalData.userDetails.profileImage
+                      : ""
+                  }`,
+                }}
+                resizeMode="cover"
+                style={[
+                  tw``,
+                  {
+                    flex: 1,
+                    justifyContent: "center",
+                  },
+                ]}
+              />
+              <View
+                style={[
+                  tw`mt-auto`,
+                  {
+                    backgroundColor: "#FFFFFF",
+                  },
+                ]}
+              >
+                <View style={[tw`pt-5 flex flex-row justify-around mb-3`, {}]}>
+                  {/* <Text>icons</Text> */}
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                      navigation.navigate("ChartConversation", {
+                        userData: select.UserData,
+                        chartData: modalData,
+                      });
+                    }}
+                  >
+                    <Icon
+                      name="chatbox-ellipses-outline"
+                      size={22}
+                      color="#128C7E"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Icon name="call-sharp" size={22} color="#128C7E" />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Icon name="videocam" size={22} color="#128C7E" />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Icon
+                      name="information-circle-outline"
+                      size={22}
+                      color="#128C7E"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       {!select.fetchContactList ? null : !select.fetchContactList
           .data ? null : (
         <FlatList
@@ -59,7 +164,10 @@ const Chat = ({ navigation }) => {
             <View>
               <TouchableOpacity
                 onPress={() => {
-                  console.log("user wants to view chat");
+                  navigation.navigate("ChartConversation", {
+                    userData: select.UserData,
+                    chartData: item,
+                  });
                 }}
               >
                 <View
@@ -70,7 +178,8 @@ const Chat = ({ navigation }) => {
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      console.log("user wants to view the image");
+                      setModalData(item);
+                      setModalVisible(true);
                     }}
                   >
                     <View style={[tw`pl-4`]}>
@@ -127,7 +236,7 @@ const Chat = ({ navigation }) => {
                       },
                     ]}
                   >
-                    <Text style={[tw`text-green-600`]}>
+                    <Text style={[tw`text-green-700`]}>
                       {formatTime(item.userLastMessage.timeSent)}
                     </Text>
                   </View>

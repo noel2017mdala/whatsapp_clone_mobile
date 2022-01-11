@@ -7,7 +7,7 @@ import axios from "axios";
 // import  Axios  from "react-native-axios";
 
 export const LogIn = (data, cb) => {
-  let url = "http://192.168.43.193:8000/api/v1/users/login";
+  let url = "https://node-whatsapp-backend.herokuapp.com/api/v1/users/login";
 
   return async (dispatch) => {
     try {

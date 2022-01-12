@@ -1,8 +1,9 @@
+import env from "../../utils/env";
 export const FETCH_USER_CONTACT_LIST = "FETCH_USER_CONTACT_LIST";
 export const fetchContactList = (userId, tokens) => {
   let id = userId._id;
 
-  const url = `https://node-whatsapp-backend.herokuapp.com/api/v1/users/getUser/${id}`;
+  const url = `${env.DEV_SERVER_URL}api/v1/users/getUser/${id}`;
   return async (dispatch) => {
     const response = await fetch(url, {
       headers: {

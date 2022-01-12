@@ -17,6 +17,7 @@ import tw from "tailwind-react-native-classnames";
 import { fetchContactList } from "../Redux/Actions/FetchUser";
 import Icon from "react-native-vector-icons/Ionicons";
 import formatTime from "../utils/DateFormater";
+import env from "../utils/env";
 
 const Chat = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
@@ -82,7 +83,7 @@ const Chat = ({ navigation }) => {
               </View>
               <ImageBackground
                 source={{
-                  uri: `http://192.168.43.193:8000/api/v1/users/getImage/${
+                  uri: `${env.DEV_SERVER_URL}api/v1/users/getImage/${
                     modalData.userDetails
                       ? modalData.userDetails.profileImage
                       : ""
@@ -185,7 +186,7 @@ const Chat = ({ navigation }) => {
                     <View style={[tw`pl-4`]}>
                       <Image
                         source={{
-                          uri: `http://192.168.43.193:8000/api/v1/users/getImage/${item.userDetails.profileImage}`,
+                          uri: `${env.DEV_SERVER_URL}api/v1/users/getImage/${item.userDetails.profileImage}`,
                         }}
                         style={[tw` rounded-full w-14 h-14`]}
                       />

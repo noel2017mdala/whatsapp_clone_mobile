@@ -1,13 +1,15 @@
+import env from "../../utils/env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN = "LOGIN";
 export const ASSIGN_TOKENS = "ASSIGN_TOKENS";
 export const GET_USER_DATA = "GET_USER_DATA";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+
 // import  Axios  from "react-native-axios";
 
 export const LogIn = (data, cb) => {
-  let url = "https://node-whatsapp-backend.herokuapp.com/api/v1/users/login";
+  let url = `${env.DEV_SERVER_URL}api/v1/users/login`;
 
   return async (dispatch) => {
     try {

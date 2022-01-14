@@ -7,6 +7,8 @@ import Smiley from "react-native-vector-icons/Feather";
 import Attachment from "react-native-vector-icons/Ionicons";
 import Camera from "react-native-vector-icons/SimpleLineIcons";
 import Mic from "react-native-vector-icons/Feather";
+import Keyboard from "react-native-vector-icons/FontAwesome";
+
 import {
   StyleSheet,
   Text,
@@ -19,9 +21,11 @@ import {
 } from "react-native";
 
 import tw from "tailwind-react-native-classnames";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import formatTime from "../utils/DateFormater";
 import { getAllMessages } from "../Redux/Actions/MessagesAction";
+import EmojiSelector from "react-native-emoji-selector";
+import EmojiData from "./EmojiData";
 
 const UserChat = ({ navigation, route }) => {
   const { name, profileImage, userActivity } =
@@ -29,6 +33,7 @@ const UserChat = ({ navigation, route }) => {
   const [lastSeen, setLastSeen] = useState("");
   const [messageBody, setMessageBody] = useState("");
   const [show, setShow] = useState(false);
+  const [emojiState, setEmojiState] = useState(false);
 
   const dispatch = useDispatch();
   const select = useSelector((e) => {
@@ -57,7 +62,6 @@ const UserChat = ({ navigation, route }) => {
     return data;
   };
 
-  console.log(select.lastMessage);
   return (
     <SafeAreaView style={[tw``]}>
       <View
@@ -143,6 +147,115 @@ const UserChat = ({ navigation, route }) => {
           {/* <View style={[tw`bg-red-400 `]}>
             <Text>Hello World</Text>
           </View> */}
+
+          {/* {!select.lastMessage ? null : !select.lastMessage
+              .data ? null : !select.lastMessage.data.message ? null : (
+            <FlatList
+              keyExtractor={(item) => {
+                return item._id;
+              }}
+              data={select.lastMessage.data.message}
+              renderItem={({ item }) => (
+                <View>
+                  <Text>{item.messagesBody}</Text>
+                </View>
+              )}
+            />
+          )} */}
+
+          <View>
+            <View>
+              <View style={[tw``]}>
+                <View style={[tw`flex flex-col items-center justify-center`]}>
+                  {/* <Text
+                    style={[
+                      tw`p-2 rounded mt-2 font-medium`,
+                      {
+                        backgroundColor: "#ade0f7",
+                      },
+                    ]}
+                  >
+                    TODAY
+                  </Text> */}
+                  <Text
+                    style={[
+                      tw`p-2 rounded mt-4 font-medium`,
+                      {
+                        backgroundColor: "#ade0f7",
+                      },
+                    ]}
+                  >
+                    20/12/2021
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    tw`flex p-1 mt-3 rounded flex-row relative w-4/5 mx-auto `,
+                    {
+                      backgroundColor: "#fdf4c5",
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[tw`text-black relative text-center font-medium`]}
+                  >
+                    <Attachment name="lock-closed-sharp" size={12} />
+                    Messages are end-to-end encrypted. No one outside of this
+                    chat, not even WhatsApp, can read or listen to them.
+                    {
+                      <Text style={[tw`text-green-600 font-medium underline`]}>
+                        Click to learn more.
+                      </Text>
+                    }
+                  </Text>
+                </View>
+              </View>
+              <View style={[tw`flex mt-3`]}>
+                {!select.lastMessage ? null : !select.lastMessage
+                    .data ? null : !select.lastMessage.data.message ? null : (
+                  <FlatList
+                    keyExtractor={(item) => {
+                      return item._id;
+                    }}
+                    data={select.lastMessage.data.message}
+                    renderItem={({ item }) => (
+                      <View
+                        style={[
+                          tw`mt-2  flex flex-col relative items-start  ${
+                            item.from !== select.UserData._id
+                              ? `items-start ml-3`
+                              : `items-end mr-6`
+                          }`,
+                          ,
+                        ]}
+                      >
+                        <View
+                          style={[
+                            tw`bg-red-300  w-2/4 max-w-xl rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  flex relative ${
+                              item.from !== select.UserData._id
+                                ? `bg-white `
+                                : ``
+                            }`,
+                            item.from !== select.UserData._id
+                              ? {
+                                  backgroundColor: "#FFFFFF",
+                                }
+                              : {
+                                  backgroundColor: "#dbf8c6",
+                                },
+                          ]}
+                        >
+                          <Text style={[tw`text-base leading-6 `]}>
+                            {item.messagesBody}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  />
+                )}
+              </View>
+            </View>
+          </View>
         </ImageBackground>
 
         <View style={[tw` mt-auto`]}>
@@ -156,14 +269,28 @@ const UserChat = ({ navigation, route }) => {
                 },
               ]}
             >
-              <TouchableOpacity>
-                <Smiley
-                  name="smile"
-                  size={22}
-                  color={"#525252"}
-                  style={[tw`p-2`]}
-                />
+              <TouchableOpacity
+                onPress={() => {
+                  setEmojiState(!emojiState);
+                }}
+              >
+                {emojiState ? (
+                  <Keyboard
+                    name="keyboard-o"
+                    size={22}
+                    color={"#525252"}
+                    style={[tw`p-2`]}
+                  />
+                ) : (
+                  <Smiley
+                    name="smile"
+                    size={22}
+                    color={"#525252"}
+                    style={[tw`p-2`]}
+                  />
+                )}
               </TouchableOpacity>
+
               <TextInput
                 style={[
                   tw`bg-white w-3/4 rounded p-3 text-gray-600`,
@@ -177,9 +304,14 @@ const UserChat = ({ navigation, route }) => {
                 multiline={true}
                 value={messageBody}
                 onChangeText={(e) => {
+                  emojiState ? setEmojiState(!emojiState) : null;
                   setMessageBody(e);
                 }}
+                onTouchStart={() => {
+                  emojiState ? setEmojiState(!emojiState) : null;
+                }}
               />
+
               <TouchableOpacity>
                 <Attachment name="attach" size={25} color={"#525252"} />
               </TouchableOpacity>
@@ -216,8 +348,14 @@ const UserChat = ({ navigation, route }) => {
               </View>
             </TouchableOpacity>
           </View>
+          {emojiState ? (
+            <View style={[tw`bg-white  pt-52 ml-2 mr-2 rounded `]}>
+              <View>
+                <Text>Emojis Are coming soon 😊 </Text>
+              </View>
+            </View>
+          ) : null}
         </View>
-        {/* <EmojiBoard showBoard={show} onClick={onClick} /> */}
       </View>
     </SafeAreaView>
   );

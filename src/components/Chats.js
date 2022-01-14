@@ -18,6 +18,7 @@ import { fetchContactList } from "../Redux/Actions/FetchUser";
 import Icon from "react-native-vector-icons/Ionicons";
 import formatTime from "../utils/DateFormater";
 import env from "../utils/env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Chat = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
@@ -26,11 +27,33 @@ const Chat = ({ navigation }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    // removeValueToken();
+    // removeValue();
     dispatch(fetchContactList(select.UserData, select.Tokens));
   }, []);
   const select = useSelector((e) => {
     return e;
   });
+
+  // const removeValue = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem("UserData");
+  //   } catch (e) {
+  //     // remove error
+  //   }
+
+  //   console.log("Done.");
+  // };
+
+  // const removeValueToken = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem("token");
+  //   } catch (e) {
+  //     // remove error
+  //   }
+
+  //   console.log("Done.");
+  // };
 
   return (
     <View

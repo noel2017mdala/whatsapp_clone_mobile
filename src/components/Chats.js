@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+
 import Modal from "react-native-modal";
 import tw from "tailwind-react-native-classnames";
 import { fetchContactList } from "../Redux/Actions/FetchUser";
@@ -216,7 +217,7 @@ const Chat = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
 
-                  <View style={[tw`ml-6 flex`, {}]}>
+                  <View style={[tw`ml-4 flex`, {}]}>
                     <View>
                       <Text style={[tw`font-bold text-lg`]}>
                         {item.userDetails.name}
@@ -225,7 +226,15 @@ const Chat = ({ navigation }) => {
 
                     <View style={[tw``, {}]}>
                       <View>
-                        <Text style={[tw``]}>
+                        <Text
+                          style={[
+                            tw`overflow-hidden`,
+                            {
+                              width: "100%",
+                            },
+                          ]}
+                          numberOfLines={1}
+                        >
                           {item.userLastMessage.from === select.UserData._id ? (
                             <Icon
                               name={
@@ -241,9 +250,18 @@ const Chat = ({ navigation }) => {
                               }
                             />
                           ) : null}
-                          <Text style={[tw`text-base`]}>
+                          <Text
+                            style={[tw`text-base overflow-hidden`]}
+                            numberOfLines={1}
+                          >
                             {" "}
-                            {item.userLastMessage.messagesBody}
+                            {/* {item.userLastMessage.messagesBody} */}
+                            {item.userLastMessage.messagesBody.length > 30
+                              ? item.userLastMessage.messagesBody.substring(
+                                  0,
+                                  30
+                                ) + "..."
+                              : item.userLastMessage.messagesBody}
                           </Text>
                         </Text>
                       </View>

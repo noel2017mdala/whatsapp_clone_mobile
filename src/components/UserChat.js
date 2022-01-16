@@ -21,7 +21,11 @@ import {
 } from "react-native";
 
 import tw from "tailwind-react-native-classnames";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import formatTime from "../utils/DateFormater";
 import { getAllMessages } from "../Redux/Actions/MessagesAction";
 import EmojiSelector from "react-native-emoji-selector";
@@ -147,7 +151,6 @@ const UserChat = ({ navigation, route }) => {
           {/* <View style={[tw`bg-red-400 `]}>
             <Text>Hello World</Text>
           </View> */}
-
           {/* {!select.lastMessage ? null : !select.lastMessage
               .data ? null : !select.lastMessage.data.message ? null : (
             <FlatList
@@ -162,99 +165,105 @@ const UserChat = ({ navigation, route }) => {
               )}
             />
           )} */}
-
-          <View>
-            <View>
-              <View style={[tw``]}>
-                <View style={[tw`flex flex-col items-center justify-center`]}>
-                  {/* <Text
-                    style={[
-                      tw`p-2 rounded mt-2 font-medium`,
-                      {
-                        backgroundColor: "#ade0f7",
-                      },
-                    ]}
-                  >
-                    TODAY
-                  </Text> */}
-                  <Text
-                    style={[
-                      tw`p-2 rounded mt-4 font-medium`,
-                      {
-                        backgroundColor: "#ade0f7",
-                      },
-                    ]}
-                  >
-                    20/12/2021
-                  </Text>
-                </View>
-                <View
+          <View
+            style={
+              (tw``,
+              {
+                height: "77%",
+              })
+            }
+          >
+            <ScrollView style={tw``}>
+              <View style={[tw`flex flex-col items-center justify-center`]}>
+                {/* <Text
+    style={[
+      tw`p-2 rounded mt-2 font-medium`,
+      {
+        backgroundColor: "#ade0f7",
+      },
+    ]}
+  >
+    TODAY
+  </Text> */}
+                <Text
                   style={[
-                    tw`flex p-1 mt-3 rounded flex-row relative w-4/5 mx-auto `,
+                    tw`p-2 rounded mt-4 font-medium`,
                     {
-                      backgroundColor: "#fdf4c5",
+                      backgroundColor: "#ade0f7",
                     },
                   ]}
                 >
-                  <Text
-                    style={[tw`text-black relative text-center font-medium`]}
-                  >
-                    <Attachment name="lock-closed-sharp" size={12} />
-                    Messages are end-to-end encrypted. No one outside of this
-                    chat, not even WhatsApp, can read or listen to them.
-                    {
-                      <Text style={[tw`text-green-600 font-medium underline`]}>
-                        Click to learn more.
-                      </Text>
-                    }
-                  </Text>
-                </View>
+                  20/12/2021
+                </Text>
+              </View>
+
+              <View
+                style={[
+                  tw`flex p-1 mt-3 rounded flex-row relative w-4/5 mx-auto `,
+                  {
+                    backgroundColor: "#fdf4c5",
+                  },
+                ]}
+              >
+                <Text style={[tw`text-black relative text-center font-medium`]}>
+                  <Attachment name="lock-closed-sharp" size={12} />
+                  Messages are end-to-end encrypted. No one outside of this
+                  chat, not even WhatsApp, can read or listen to them.
+                  {
+                    <Text style={[tw`text-green-600 font-medium underline`]}>
+                      Click to learn more.
+                    </Text>
+                  }
+                </Text>
               </View>
               <View style={[tw`flex mt-3`]}>
-                {!select.lastMessage ? null : !select.lastMessage
-                    .data ? null : !select.lastMessage.data.message ? null : (
-                  <FlatList
-                    keyExtractor={(item) => {
-                      return item._id;
-                    }}
-                    data={select.lastMessage.data.message}
-                    renderItem={({ item }) => (
-                      <View
-                        style={[
-                          tw`mt-2  flex flex-col relative items-start  ${
-                            item.from !== select.UserData._id
-                              ? `items-start ml-3`
-                              : `items-end mr-6`
-                          }`,
-                          ,
-                        ]}
-                      >
+                {!select.lastMessage
+                  ? null
+                  : !select.lastMessage.data
+                  ? null
+                  : !select.lastMessage.data.message
+                  ? null
+                  : select.lastMessage.data.message.map((item, index) => (
+                      <View key={index}>
                         <View
                           style={[
-                            tw`bg-red-300  w-2/4 max-w-xl rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  flex relative ${
+                            tw`mt-2  flex flex-col relative items-start  ${
                               item.from !== select.UserData._id
-                                ? `bg-white `
-                                : ``
+                                ? `items-start ml-3`
+                                : `items-end mr-6`
                             }`,
-                            item.from !== select.UserData._id
-                              ? {
-                                  backgroundColor: "#FFFFFF",
-                                }
-                              : {
-                                  backgroundColor: "#dbf8c6",
-                                },
+                            ,
                           ]}
                         >
-                          <Text style={[tw`text-base leading-6 `]}>
-                            {item.messagesBody}
-                          </Text>
+                          <View
+                            style={[
+                              tw`bg-red-300 rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  flex relative ${
+                                item.from !== select.UserData._id
+                                  ? `bg-white`
+                                  : ``
+                              }`,
+                              item.from !== select.UserData._id
+                                ? {
+                                    backgroundColor: "#FFFFFF",
+                                  }
+                                : {
+                                    backgroundColor: "#dbf8c6",
+                                  },
+                              {
+                                maxWidth: "75%",
+                                minWidth: "22%",
+                              },
+                            ]}
+                          >
+                            <Text style={[tw`text-base leading-6`]}>
+                              {item.messagesBody}
+                            </Text>
+                          </View>
                         </View>
                       </View>
-                    )}
-                  />
-                )}
+                    ))}
               </View>
-            </View>
+            </ScrollView>
           </View>
         </ImageBackground>
 

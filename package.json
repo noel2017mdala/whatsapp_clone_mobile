@@ -30,6 +30,7 @@
     "react-native-pager-view": "5.4.9",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-socket.io": "^0.3.1",
     "react-native-svg": "12.1.1",
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.0.0",
@@ -38,6 +39,7 @@
     "react-spinners": "^0.11.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
+    "socket.io-client": "^4.4.1",
     "tailwind-react-native-classnames": "^1.5.1"
   },
   "devDependencies": {

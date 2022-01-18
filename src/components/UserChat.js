@@ -8,6 +8,9 @@ import Attachment from "react-native-vector-icons/Ionicons";
 import Camera from "react-native-vector-icons/SimpleLineIcons";
 import Mic from "react-native-vector-icons/Feather";
 import Keyboard from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Ionicons";
+import socket from "../Socket";
+import socketHelper from "../utils/socketHelper";
 
 import {
   StyleSheet,
@@ -66,6 +69,12 @@ const UserChat = ({ navigation, route }) => {
     return data;
   };
 
+  const validate = (input) => {
+    if (/^\s/.test(input) && input !== undefined) {
+      input = "";
+    }
+  };
+
   return (
     <SafeAreaView style={[tw``]}>
       <View
@@ -116,7 +125,7 @@ const UserChat = ({ navigation, route }) => {
               <TouchableOpacity>
                 <BackIcon
                   name="ios-videocam"
-                  size={20}
+                  size={23}
                   color="white"
                   style={[tw`mr-6`]}
                 />
@@ -124,7 +133,7 @@ const UserChat = ({ navigation, route }) => {
               <TouchableOpacity>
                 <BackIcon
                   name="call"
-                  size={19}
+                  size={23}
                   color="white"
                   style={[tw`mr-4`]}
                 />
@@ -132,7 +141,7 @@ const UserChat = ({ navigation, route }) => {
               <TouchableOpacity>
                 <Option
                   name="options-vertical"
-                  size={18}
+                  size={19}
                   color="white"
                   style={[tw`mr-4`]}
                 />
@@ -237,7 +246,7 @@ const UserChat = ({ navigation, route }) => {
                         >
                           <View
                             style={[
-                              tw`bg-red-300 rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  flex relative ${
+                              tw`bg-red-300 rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  ${
                                 item.from !== select.UserData._id
                                   ? `bg-white`
                                   : ``
@@ -251,13 +260,38 @@ const UserChat = ({ navigation, route }) => {
                                   },
                               {
                                 maxWidth: "75%",
-                                minWidth: "22%",
+                                minWidth: "30%",
                               },
                             ]}
                           >
-                            <Text style={[tw`text-base leading-6`]}>
-                              {item.messagesBody}
-                            </Text>
+                            <View style={[tw`relative`]}>
+                              <Text style={[tw`text-base leading-6`]}>
+                                {item.messagesBody}
+                              </Text>
+
+                              <View style={[tw`flex items-end `]}>
+                                <Text
+                                  style={tw`text-black text-xs italic font-bold`}
+                                >
+                                  {formatTime(item.timeSent)}
+                                  {item.from !== select.UserData._id ? null : (
+                                    <Icon
+                                      name={
+                                        item.messageStatus === "sent"
+                                          ? "checkmark"
+                                          : "checkmark-done"
+                                      }
+                                      size={20}
+                                      color={
+                                        item.messageStatus === "read"
+                                          ? "#7EC8E3"
+                                          : "#C5C5C5"
+                                      }
+                                    />
+                                  )}
+                                </Text>
+                              </View>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -314,6 +348,7 @@ const UserChat = ({ navigation, route }) => {
                 value={messageBody}
                 onChangeText={(e) => {
                   emojiState ? setEmojiState(!emojiState) : null;
+                  // validate(e)
                   setMessageBody(e);
                 }}
                 onTouchStart={() => {
@@ -350,7 +385,26 @@ const UserChat = ({ navigation, route }) => {
                   color={"white"}
                 /> */}
                 {messageBody.length > 0 ? (
-                  <Mic name="send" size={22} color={"white"} />
+                  <Mic
+                    name="send"
+                    size={22}
+                    color={"white"}
+                    onPress={() => {
+                      let userSessionData = select.UserData;
+                      let userId = route.params.chartData.userDetails._id;
+                      let messageContent = {
+                        from: userSessionData._id,
+                        to: userId,
+                        messagesBody: messageBody,
+                      };
+                      socket.emit("message-sent", messageContent, {
+                        userSessionData,
+                        userId,
+                      });
+
+                      setMessageBody("");
+                    }}
+                  />
                 ) : (
                   <Mic name="mic" size={22} color={"white"} />
                 )}

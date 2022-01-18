@@ -5,20 +5,12 @@ import Loader from "./src/components/Loader";
 import Login from "./src/components/Login";
 import Landing from "./src/components/Landing";
 import tw from "tailwind-react-native-classnames";
-import rootReducer from "./src/Redux/Reducers";
 import { Provider } from "react-redux";
-
-import { applyMiddleware, compose, createStore } from "redux";
-import thunk from "redux-thunk";
+import Store from "./src/Redux/Config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const userLoin = false;
-const middleware = [thunk];
 
-export const store = createStore(
-  rootReducer,
-  compose(applyMiddleware(...middleware))
-);
 export default function App() {
   const [token, setTokenState] = useState(false);
   const [userData, setUserData] = useState(false);
@@ -65,8 +57,9 @@ export default function App() {
   }, []);
 
   if (!appLoaded) return <Loader />;
+
   return (
-    <Provider store={store}>
+    <Provider store={Store}>
       <SafeAreaView style={tw`bg-white h-full`}>
         {token && userData ? (
           <Landing token={tokenData} userData={userStateData} />

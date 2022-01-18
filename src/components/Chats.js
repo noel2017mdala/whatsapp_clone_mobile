@@ -20,6 +20,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import formatTime from "../utils/DateFormater";
 import env from "../utils/env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import socket from "../Socket";
 
 const Chat = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);

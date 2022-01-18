@@ -13,7 +13,6 @@ export const fetchContactList = (userId, tokens) => {
     });
     const resData = await response.json();
     let data = resData;
-    console.log(data);
 
     dispatch({ type: FETCH_USER_CONTACT_LIST, payLoad: data });
   };

@@ -2,6 +2,12 @@ import env from "../../utils/env";
 export const GET_ALL_MESSAGE = "GET_ALL_MESSAGE";
 
 export const getAllMessages = (myId, id, tokens) => {
+  // console.log({
+  //   myId,
+  //   id,
+  //   tokens,
+  // });
+
   let userId = myId._id;
   if (id) {
     const url = `${env.DEV_SERVER_URL}api/v1/chat/getAllMessages/${userId}/${id}`;

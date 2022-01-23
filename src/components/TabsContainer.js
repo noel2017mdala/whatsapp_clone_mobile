@@ -21,7 +21,6 @@ import Groups from "./Groups";
 import UserChat from "./UserChat";
 import OptionsIcon from "react-native-vector-icons/SimpleLineIcons";
 import SearchICon from "react-native-vector-icons/EvilIcons";
-import ChatHeader from "./Headers/ChatHeader";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();

@@ -75,6 +75,8 @@ const UserChat = ({ navigation, route }) => {
     }
   };
 
+  // console.log(select.lastMessage);
+
   return (
     <SafeAreaView style={[tw``]}>
       <View
@@ -390,15 +392,15 @@ const UserChat = ({ navigation, route }) => {
                     size={22}
                     color={"white"}
                     onPress={() => {
-                      let userSessionData = select.UserData;
+                      let userData = select.UserData;
                       let userId = route.params.chartData.userDetails._id;
                       let messageContent = {
-                        from: userSessionData._id,
+                        from: userData._id,
                         to: userId,
                         messagesBody: messageBody,
                       };
                       socket.emit("message-sent", messageContent, {
-                        userSessionData,
+                        userData,
                         userId,
                       });
 

@@ -5,7 +5,7 @@ const state = Store.getState();
 // console.log(state.UserData._id);
 let socket = io(`${env.DEV_SERVER_URL}`, {
   transports: ["websocket"],
-  query: `mobileId=${state.UserData._id}`,
+  query: `mobileId=61b7336a571c140016f8577f`,
 });
 
 export default socket;

@@ -32,17 +32,40 @@ getUserData()
 
     socket.on("demo", (id, userDetails) => {
       Store.dispatch(
-        getAllMessages(userDetails.userData, userDetails.userId, token)
+        getAllMessages(
+          userDetails.userData,
+          userDetails.userId,
+          token,
+          res.userData
+        )
       );
       Store.dispatch(fetchContactList(userDetails.userData, token));
     });
 
     socket.on("demoBroadcast", (id, userDetails) => {
       Store.dispatch(
-        getAllMessages(userDetails.userData, userDetails.userId, token)
+        getAllMessages(
+          userDetails.userData,
+          userDetails.userId,
+          token,
+          res.userData
+        )
       );
 
       Store.dispatch(fetchContactList(userDetails.userData, token));
+    });
+
+    socket.on("receive-message", (message, userDetails) => {
+      Store.dispatch(
+        getAllMessages(
+          userDetails.userData,
+          userDetails.userId,
+          token,
+          res.userData
+        )
+      );
+
+      Store.dispatch(fetchContactList(res.userData, token));
     });
   })
   .catch((err) => {

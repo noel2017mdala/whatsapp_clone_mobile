@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
+import GroupUsersIcon from "react-native-vector-icons/Ionicons";
 import { HeaderTab } from "../utils/NavigationHeader";
-import GroupUsersIcon from "react-native-vector-icons/AntDesign";
 
-const Groups = ({ navigation }) => {
+const UserChatList = ({ navigation }) => {
   const NavigateBack = () => {
     navigation.goBack();
   };
-
   return (
     <>
-      <HeaderTab name={"Your Groups"} navigateBack={NavigateBack} />
+      <HeaderTab name={"Select Contacts"} navigateBack={NavigateBack} />
+      {/* <View style={styles.container}>
+        <Text>Hello User List</Text>
+      </View> */}
+
       <View
         style={[
           tw`relative`,
@@ -22,7 +26,7 @@ const Groups = ({ navigation }) => {
           },
         ]}
       >
-        <Text>Hello Groups</Text>
+        <Text>Hello User List</Text>
 
         <View
           style={[
@@ -36,7 +40,7 @@ const Groups = ({ navigation }) => {
           <TouchableOpacity
             style={[tw`mt-3`, {}]}
             onPress={() => {
-              console.log("Create Group");
+              console.log("Create User");
             }}
           >
             <View
@@ -47,7 +51,7 @@ const Groups = ({ navigation }) => {
                 },
               ]}
             >
-              <GroupUsersIcon name="addusergroup" size={25} color="#FFFFFF" />
+              <GroupUsersIcon name="person-add" size={25} color="#FFFFFF" />
             </View>
           </TouchableOpacity>
         </View>
@@ -63,5 +67,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default Groups;
+export default UserChatList;

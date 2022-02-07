@@ -17,6 +17,7 @@ import Modal from "react-native-modal";
 import tw from "tailwind-react-native-classnames";
 import { fetchContactList } from "../Redux/Actions/FetchUser";
 import Icon from "react-native-vector-icons/Ionicons";
+import GroupUsersIcon from "react-native-vector-icons/MaterialIcons";
 import formatTime from "../utils/DateFormater";
 import env from "../utils/env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -60,7 +61,7 @@ const Chat = ({ navigation }) => {
   return (
     <View
       style={[
-        tw``,
+        tw`relative`,
         {
           flex: 1,
           backgroundColor: "#f5f5f5",
@@ -290,6 +291,54 @@ const Chat = ({ navigation }) => {
           style={[tw`mt-4`]}
         />
       )}
+
+      <View
+        style={[
+          tw`absolute bottom-0 right-0 z-20`,
+          {
+            marginRight: "2%",
+            marginBottom: "4%",
+          },
+        ]}
+      >
+        <View style={[tw``]}>
+          <TouchableOpacity
+            style={[tw`mt-3`, {}]}
+            onPress={() => {
+              navigation.navigate("Groups");
+            }}
+          >
+            <View
+              style={[
+                tw`w-14 h-14 rounded-full flex items-center justify-center p-3`,
+                {
+                  backgroundColor: "#128C7E",
+                },
+              ]}
+            >
+              <GroupUsersIcon name="groups" size={25} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[tw`mt-3`, {}]}
+            onPress={() => {
+              navigation.navigate("UserContactList");
+            }}
+          >
+            <View
+              style={[
+                tw`w-14 h-14 rounded-full flex items-center justify-center p-3`,
+                {
+                  backgroundColor: "#128C7E",
+                },
+              ]}
+            >
+              <Icon name="chatbox-ellipses-outline" size={25} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

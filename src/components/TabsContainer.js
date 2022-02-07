@@ -19,13 +19,14 @@ import Status from "./Status";
 import Calls from "./Calls";
 import Groups from "./Groups";
 import UserChat from "./UserChat";
+import UserChatList from "./UserContactList";
 import OptionsIcon from "react-native-vector-icons/SimpleLineIcons";
 import SearchICon from "react-native-vector-icons/EvilIcons";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
-const HeaderTab = () => {
+const HeaderTab = (props) => {
   const select = useSelector((e) => {
     return e;
   });
@@ -115,6 +116,22 @@ const TabsContainer = () => {
         <Stack.Screen
           name="ChartConversation"
           component={UserChat}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="UserContactList"
+          component={UserChatList}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Groups"
+          component={Groups}
           options={{
             headerShown: false,
           }}

@@ -28,15 +28,16 @@ const Chat = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState({});
 
+  const select = useSelector((e) => {
+    return e;
+  });
+
   const dispatch = useDispatch();
   useEffect(() => {
     // removeValueToken();
     // removeValue();
     dispatch(fetchContactList(select.UserData, select.Tokens));
   }, []);
-  const select = useSelector((e) => {
-    return e;
-  });
 
   // const removeValue = async () => {
   //   try {
@@ -136,10 +137,12 @@ const Chat = ({ navigation }) => {
                   {/* <Text>icons</Text> */}
                   <TouchableOpacity
                     onPress={() => {
+                      // console.log(modalData);
+                      // return;
                       setModalVisible(false);
                       navigation.navigate("ChartConversation", {
                         userData: select.UserData,
-                        chartData: modalData,
+                        chartData: modalData.userDetails,
                       });
                     }}
                   >
@@ -193,7 +196,7 @@ const Chat = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate("ChartConversation", {
                     userData: select.UserData,
-                    chartData: item,
+                    chartData: item.userDetails,
                   });
                 }}
               >

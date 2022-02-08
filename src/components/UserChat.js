@@ -35,8 +35,7 @@ import EmojiSelector from "react-native-emoji-selector";
 import EmojiData from "./EmojiData";
 
 const UserChat = ({ navigation, route }) => {
-  const { name, profileImage, userActivity } =
-    route.params.chartData.userDetails;
+  const { name, profileImage, userActivity } = route.params.chartData;
   const [lastSeen, setLastSeen] = useState("");
   const [messageBody, setMessageBody] = useState("");
   const [show, setShow] = useState(false);
@@ -48,11 +47,7 @@ const UserChat = ({ navigation, route }) => {
   });
   useEffect(() => {
     dispatch(
-      getAllMessages(
-        select.UserData,
-        route.params.chartData.userDetails._id,
-        select.Tokens
-      )
+      getAllMessages(select.UserData, route.params.chartData._id, select.Tokens)
     );
     setTimeout(() => {
       returnLastSeen();
@@ -393,7 +388,7 @@ const UserChat = ({ navigation, route }) => {
                     color={"white"}
                     onPress={() => {
                       let userData = select.UserData;
-                      let userId = route.params.chartData.userDetails._id;
+                      let userId = route.params.chartData._id;
                       let messageContent = {
                         from: userData._id,
                         to: userId,

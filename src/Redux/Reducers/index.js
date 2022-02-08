@@ -5,6 +5,7 @@ import { Tokens, UserData } from "./tokens";
 import NavHeader from "./NavHeader";
 import userDataReducer from "./UserData";
 import lastMessage from "./MessagesReducer";
+import ContactList from "./FetchContactList";
 const rootReducer = combineReducers({
   LoginValidator,
   fetchContactList,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   NavHeader,
   lastMessage,
   userDataReducer,
+  ContactList,
 });
 
 export default rootReducer;

@@ -22,6 +22,8 @@ import UserChat from "./UserChat";
 import UserChatList from "./UserContactList";
 import OptionsIcon from "react-native-vector-icons/SimpleLineIcons";
 import SearchICon from "react-native-vector-icons/EvilIcons";
+import CreateGroup from "./CreateGroup";
+import CreateUser from "./CreateUser";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -136,6 +138,23 @@ const TabsContainer = () => {
             headerShown: false,
           }}
         />
+
+        <Stack.Screen
+          name="CreateGroup"
+          component={CreateGroup}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateUser"
+          component={CreateUser}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         {/* <Stack.Screen
   name="CreateAccount"
   component={CreateAccount}

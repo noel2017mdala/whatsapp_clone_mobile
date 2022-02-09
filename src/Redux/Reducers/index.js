@@ -6,6 +6,7 @@ import NavHeader from "./NavHeader";
 import userDataReducer from "./UserData";
 import lastMessage from "./MessagesReducer";
 import ContactList from "./FetchContactList";
+import { UserGroupsData } from "./GetUserGroups";
 const rootReducer = combineReducers({
   LoginValidator,
   fetchContactList,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   lastMessage,
   userDataReducer,
   ContactList,
+  UserGroupsData,
 });
 
 export default rootReducer;

@@ -238,7 +238,16 @@ const UserChatList = ({ navigation }) => {
 
                         <View>
                           <View>
-                            <Text style={[tw`overflow-hidden italic`]}>
+                            <Text
+                              style={[
+                                tw`overflow-hidden italic`,
+                                {
+                                  width: 240,
+                                },
+                              ]}
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                            >
                               {item.userAbout}
                             </Text>
                           </View>
@@ -265,6 +274,7 @@ const UserChatList = ({ navigation }) => {
           <TouchableOpacity
             style={[tw`mt-3`, {}]}
             onPress={() => {
+              navigation.navigate("CreateUser");
               console.log("Create User");
             }}
           >

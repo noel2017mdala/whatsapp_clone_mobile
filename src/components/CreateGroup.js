@@ -20,6 +20,7 @@ import env from "../utils/env";
 import tw from "tailwind-react-native-classnames";
 import Icon from "react-native-vector-icons/AntDesign";
 import { HeaderTab } from "../utils/NavigationHeader";
+import AppLoader from "../utils/Loader";
 
 const CreateGroup = () => {
   let [checkedUsers, setCheckedUsers] = useState([]);
@@ -104,7 +105,11 @@ const CreateGroup = () => {
             ]}
           >
             {/* <Text>Hello Create Group</Text> */}
-            {!select.ContactList ? null : !select.ContactList.data ? null : (
+            {!select.ContactList ? (
+              <AppLoader />
+            ) : !select.ContactList.data ? (
+              <AppLoader />
+            ) : (
               <FlatList
                 keyExtractor={(item) => item._id}
                 data={select.ContactList.data}

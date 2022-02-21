@@ -22,6 +22,7 @@ import formatTime from "../utils/DateFormater";
 import env from "../utils/env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import socket from "../Socket";
+import AppLoader from "../utils/Loader";
 
 const Chat = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
@@ -172,8 +173,11 @@ const Chat = ({ navigation }) => {
         </Modal>
       </View>
 
-      {!select.fetchContactList ? null : !select.fetchContactList
-          .data ? null : (
+      {!select.fetchContactList ? (
+        <AppLoader />
+      ) : !select.fetchContactList.data ? (
+        <AppLoader />
+      ) : (
         <FlatList
           keyExtractor={(item) => item.userDetails._id}
           data={select.fetchContactList.data}

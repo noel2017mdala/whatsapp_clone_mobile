@@ -9,6 +9,7 @@ import Camera from "react-native-vector-icons/SimpleLineIcons";
 import Mic from "react-native-vector-icons/Feather";
 import Keyboard from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/Ionicons";
+import AppLoader from "../utils/Loader";
 import socket from "../Socket";
 import socketHelper from "../utils/socketHelper";
 
@@ -223,76 +224,78 @@ const UserChat = ({ navigation, route }) => {
                 </Text>
               </View>
               <View style={[tw`flex mt-3`]}>
-                {!select.lastMessage
-                  ? null
-                  : !select.lastMessage.data
-                  ? null
-                  : !select.lastMessage.data.message
-                  ? null
-                  : select.lastMessage.data.message.map((item, index) => (
-                      <View key={index}>
+                {!select.lastMessage ? (
+                  <AppLoader />
+                ) : !select.lastMessage.data ? (
+                  <AppLoader />
+                ) : !select.lastMessage.data.message ? (
+                  <AppLoader />
+                ) : (
+                  select.lastMessage.data.message.map((item, index) => (
+                    <View key={index}>
+                      <View
+                        style={[
+                          tw`mt-2  flex flex-col relative items-start  ${
+                            item.from !== select.UserData._id
+                              ? `items-start ml-3`
+                              : `items-end mr-6`
+                          }`,
+                          ,
+                        ]}
+                      >
                         <View
                           style={[
-                            tw`mt-2  flex flex-col relative items-start  ${
+                            tw`bg-red-300 rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  ${
                               item.from !== select.UserData._id
-                                ? `items-start ml-3`
-                                : `items-end mr-6`
+                                ? `bg-white`
+                                : ``
                             }`,
-                            ,
+                            item.from !== select.UserData._id
+                              ? {
+                                  backgroundColor: "#FFFFFF",
+                                }
+                              : {
+                                  backgroundColor: "#dbf8c6",
+                                },
+                            {
+                              maxWidth: "75%",
+                              minWidth: "30%",
+                            },
                           ]}
                         >
-                          <View
-                            style={[
-                              tw`bg-red-300 rounded pt-1 pr-2 pb-2 pl-2.5 leading-6  ${
-                                item.from !== select.UserData._id
-                                  ? `bg-white`
-                                  : ``
-                              }`,
-                              item.from !== select.UserData._id
-                                ? {
-                                    backgroundColor: "#FFFFFF",
-                                  }
-                                : {
-                                    backgroundColor: "#dbf8c6",
-                                  },
-                              {
-                                maxWidth: "75%",
-                                minWidth: "30%",
-                              },
-                            ]}
-                          >
-                            <View style={[tw`relative`]}>
-                              <Text style={[tw`text-base leading-6`]}>
-                                {item.messagesBody}
-                              </Text>
+                          <View style={[tw`relative`]}>
+                            <Text style={[tw`text-base leading-6`]}>
+                              {item.messagesBody}
+                            </Text>
 
-                              <View style={[tw`flex items-end `]}>
-                                <Text
-                                  style={tw`text-black text-xs italic font-bold`}
-                                >
-                                  {formatTime(item.timeSent)}
-                                  {item.from !== select.UserData._id ? null : (
-                                    <Icon
-                                      name={
-                                        item.messageStatus === "sent"
-                                          ? "checkmark"
-                                          : "checkmark-done"
-                                      }
-                                      size={20}
-                                      color={
-                                        item.messageStatus === "read"
-                                          ? "#7EC8E3"
-                                          : "#C5C5C5"
-                                      }
-                                    />
-                                  )}
-                                </Text>
-                              </View>
+                            <View style={[tw`flex items-end `]}>
+                              <Text
+                                style={tw`text-black text-xs italic font-bold`}
+                              >
+                                {formatTime(item.timeSent)}
+                                {item.from !== select.UserData._id ? null : (
+                                  <Icon
+                                    name={
+                                      item.messageStatus === "sent"
+                                        ? "checkmark"
+                                        : "checkmark-done"
+                                    }
+                                    size={20}
+                                    color={
+                                      item.messageStatus === "read"
+                                        ? "#7EC8E3"
+                                        : "#C5C5C5"
+                                    }
+                                  />
+                                )}
+                              </Text>
                             </View>
                           </View>
                         </View>
                       </View>
-                    ))}
+                    </View>
+                  ))
+                )}
               </View>
             </ScrollView>
           </View>

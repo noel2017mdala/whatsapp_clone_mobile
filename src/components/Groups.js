@@ -17,6 +17,7 @@ import { HeaderTab } from "../utils/NavigationHeader";
 import GroupUsersIcon from "react-native-vector-icons/AntDesign";
 import { GetUserGroups } from "../Redux/Actions/GroupsAction";
 import Icon from "react-native-vector-icons/Ionicons";
+import AppLoader from "../utils/Loader";
 
 const Groups = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
@@ -157,8 +158,11 @@ const Groups = ({ navigation }) => {
             </Modal>
           </View>
 
-          {!select.UserGroupsData ? null : !select.UserGroupsData
-              .data ? null : (
+          {!select.UserGroupsData ? (
+            <AppLoader />
+          ) : !select.UserGroupsData.data ? (
+            <AppLoader />
+          ) : (
             <FlatList
               keyExtractor={(item) => item._id}
               data={select.UserGroupsData.data}

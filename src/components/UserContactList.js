@@ -17,6 +17,7 @@ import GroupUsersIcon from "react-native-vector-icons/Ionicons";
 import { HeaderTab } from "../utils/NavigationHeader";
 import { FetchUserContactList } from "../Redux/Actions/FetchUser";
 import Icon from "react-native-vector-icons/Ionicons";
+import AppLoader from "../utils/Loader";
 
 const UserChatList = ({ navigation }) => {
   const [refreshing, SetRefresh] = useState(false);
@@ -161,7 +162,11 @@ const UserChatList = ({ navigation }) => {
             </Modal>
           </View>
 
-          {!select.ContactList ? null : !select.ContactList.data ? null : (
+          {!select.ContactList ? (
+            <AppLoader />
+          ) : !select.ContactList.data ? (
+            <AppLoader />
+          ) : (
             <FlatList
               keyExtractor={(item) => item._id}
               data={select.ContactList.data}

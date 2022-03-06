@@ -17,8 +17,14 @@
     "@react-navigation/stack": "^6.0.11",
     "axios": "^0.24.0",
     "expo": "~44.0.0",
+    "expo-checkbox": "~2.0.0",
+    "expo-constants": "~13.0.1",
+    "expo-file-system": "~13.1.4",
+    "expo-image-picker": "~12.0.1",
     "expo-linear-gradient": "~11.0.0",
+    "expo-permissions": "^13.1.1",
     "expo-status-bar": "~1.2.0",
+    "lottie-react-native": "5.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
@@ -41,11 +47,7 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "socket.io-client": "^4.4.1",
-    "tailwind-react-native-classnames": "^1.5.1",
-    "expo-checkbox": "~2.0.0",
-    "expo-image-picker": "~12.0.1",
-    "expo-constants": "~13.0.1",
-    "lottie-react-native": "5.0.1"
+    "tailwind-react-native-classnames": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

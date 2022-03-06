@@ -14,11 +14,14 @@ import {
   Button,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import Modal from "react-native-modal";
 import Constant from "expo-constants";
 import Checkbox from "expo-checkbox";
 import env from "../utils/env";
 import tw from "tailwind-react-native-classnames";
 import Icon from "react-native-vector-icons/AntDesign";
+import CameraIcon from "react-native-vector-icons/Ionicons";
 import { HeaderTab } from "../utils/NavigationHeader";
 import AppLoader from "../utils/Loader";
 
@@ -27,6 +30,7 @@ const CreateGroup = () => {
   const [refreshing, SetRefresh] = useState(false);
   const [createGroup, setCreateGroup] = useState(false);
   const [userImage, setUserImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const select = useSelector((e) => {
     return e;
@@ -41,7 +45,7 @@ const CreateGroup = () => {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status === "granted") {
-        selectImage();
+        await selectImage();
       } else {
         return false;
       }
@@ -56,14 +60,78 @@ const CreateGroup = () => {
       quality: 1,
     });
 
-    console.log(res);
-
     if (!res.cancelled) {
       setUserImage(res.uri);
     }
   };
+
   return (
     <>
+      {/* group and camera modal */}
+
+      <View style={[tw`relative`]}>
+        <Modal
+          isVisible={modalVisible}
+          backdropOpacity={0.4}
+          animationIn="slideInDown"
+          animationOut="fadeOut"
+          onBackButtonPress={() => {
+            setModalVisible(false);
+          }}
+          onBackdropPress={() => {
+            setModalVisible(false);
+          }}
+          backdropTransitionOutTiming={100}
+        >
+          <View
+            style={[
+              tw`absolute bottom-0`,
+              {
+                width: "100%",
+                height: "50%",
+              },
+            ]}
+          >
+            <View
+              style={[
+                tw`bg-white`,
+                {
+                  width: "100%",
+                  height: "50%",
+                },
+              ]}
+            >
+              <View>
+                <Text style={[tw`text-lg p-3`]}>Group profile photo</Text>
+              </View>
+
+              <View style={[tw`flex flex-row m-4 `]}>
+                <View>
+                  <TouchableOpacity
+                    style={[tw`border border-gray-200 p-3 rounded-full`]}
+                  >
+                    <CameraIcon name="camera" size={25} color="#128C7E" />
+                  </TouchableOpacity>
+                  <Text style={[tw`text-center mt-2`]}>Camera</Text>
+                </View>
+                <View>
+                  <TouchableOpacity
+                    style={[tw`border border-gray-200 p-3 rounded-full mx-4`]}
+                    onPress={() => {
+                      setModalVisible(false);
+                      checkPermission();
+                    }}
+                  >
+                    <CameraIcon name="images" size={25} color="#128C7E" />
+                  </TouchableOpacity>
+                  <Text style={[tw`text-center mt-2`]}>Gallery</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       {createGroup ? (
         <>
           <HeaderTab
@@ -72,25 +140,93 @@ const CreateGroup = () => {
               setCreateGroup(false);
             }}
           />
+
+          {/* <View>
+            {userImage && (
+              <View style={[tw`bg-red-300 flex items-center justify-center`]}>
+                <Image
+                  source={{
+                    uri: userImage,
+                  }}
+                  style={[
+                    tw``,
+                    {
+                      width: 100,
+                      height: 90,
+                      resizeMode: "contain",
+                    },
+                  ]}
+                />
+              </View>
+            )}
+          </View> */}
+
           <View
             style={[
-              tw`items-center justify-center`,
+              tw``,
               {
                 flex: 1,
+                backgroundColor: "#EDEDED",
               },
             ]}
           >
-            {/* <Text>Hello World</Text> */}
-            <Button title="Select Image" onPress={checkPermission} />
-            {userImage && (
-              <Image
-                source={{ url: userImage }}
-                style={{
-                  width: 200,
-                  height: 200,
-                }}
+            <View
+              style={[
+                tw`relative my-14`,
+                {
+                  width: "100%",
+                  height: "30%",
+                },
+              ]}
+            >
+              <View style={[tw`m-auto relative`]}>
+                <View style={[tw`w-40 h-40 rounded-full`]}>
+                  <Image
+                    source={{
+                      uri: userImage
+                        ? userImage
+                        : `${env.DEV_SERVER_URL}api/v1/users/getImage/defaultProfile.jpg`,
+                    }}
+                    style={[
+                      tw`w-40 h-40 rounded-full`,
+                      {
+                        resizeMode: "cover",
+                      },
+                    ]}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  style={[
+                    tw`absolute top-0 right-2 w-10 h-10 bg-green-400 rounded-full flex items-center justify-center`,
+                    {
+                      backgroundColor: "#128C7E",
+                    },
+                  ]}
+                  onPress={() => {
+                    setModalVisible(true);
+                    // checkPermission
+                  }}
+                >
+                  <CameraIcon name="camera" size={25} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* <View
+              style={[
+                tw`items-center justify-center`,
+                {
+                  flex: 1,
+                },
+              ]}
+            >
+              <Button
+                style={[tw``]}
+                title="Select Image"
+                onPress={checkPermission}
               />
-            )}
+            </View> */}
           </View>
         </>
       ) : (

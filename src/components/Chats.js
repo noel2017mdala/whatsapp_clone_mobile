@@ -40,25 +40,25 @@ const Chat = ({ navigation }) => {
     dispatch(fetchContactList(select.UserData, select.Tokens));
   }, []);
 
-  // const removeValue = async () => {
-  //   try {
-  //     await AsyncStorage.removeItem("UserData");
-  //   } catch (e) {
-  //     // remove error
-  //   }
+  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem("UserData");
+    } catch (e) {
+      // remove error
+    }
 
-  //   console.log("Done.");
-  // };
+    console.log("Done.");
+  };
 
-  // const removeValueToken = async () => {
-  //   try {
-  //     await AsyncStorage.removeItem("token");
-  //   } catch (e) {
-  //     // remove error
-  //   }
+  const removeValueToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+    } catch (e) {
+      // remove error
+    }
 
-  //   console.log("Done.");
-  // };
+    console.log("Done.");
+  };
 
   return (
     <View

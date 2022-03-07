@@ -12,8 +12,14 @@ import {
   ImageBackground,
   Platform,
   Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Keyboard,
+  SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
+import uuid from "react-native-uuid";
 import * as Permissions from "expo-permissions";
 import Modal from "react-native-modal";
 import Constant from "expo-constants";
@@ -31,6 +37,7 @@ const CreateGroup = () => {
   const [createGroup, setCreateGroup] = useState(false);
   const [userImage, setUserImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [description, setDescription] = useState("");
   const dispatch = useDispatch();
   const select = useSelector((e) => {
     return e;
@@ -65,6 +72,7 @@ const CreateGroup = () => {
     }
   };
 
+  // console.log(select.Tokens);
   return (
     <>
       {/* group and camera modal */}
@@ -133,15 +141,17 @@ const CreateGroup = () => {
       </View>
 
       {createGroup ? (
-        <>
-          <HeaderTab
-            name="Create Group"
-            navigateBack={() => {
-              setCreateGroup(false);
-            }}
-          />
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <>
+              <HeaderTab
+                name="Create Group"
+                navigateBack={() => {
+                  setCreateGroup(false);
+                }}
+              />
 
-          {/* <View>
+              {/* <View>
             {userImage && (
               <View style={[tw`bg-red-300 flex items-center justify-center`]}>
                 <Image
@@ -161,59 +171,59 @@ const CreateGroup = () => {
             )}
           </View> */}
 
-          <View
-            style={[
-              tw``,
-              {
-                flex: 1,
-                backgroundColor: "#EDEDED",
-              },
-            ]}
-          >
-            <View
-              style={[
-                tw`relative my-14`,
-                {
-                  width: "100%",
-                  height: "30%",
-                },
-              ]}
-            >
-              <View style={[tw`m-auto relative`]}>
-                <View style={[tw`w-40 h-40 rounded-full`]}>
-                  <Image
-                    source={{
-                      uri: userImage
-                        ? userImage
-                        : `${env.DEV_SERVER_URL}api/v1/users/getImage/defaultProfile.jpg`,
-                    }}
-                    style={[
-                      tw`w-40 h-40 rounded-full`,
-                      {
-                        resizeMode: "cover",
-                      },
-                    ]}
-                  />
-                </View>
-
-                <TouchableOpacity
+              <View
+                style={[
+                  tw``,
+                  {
+                    flex: 1,
+                    backgroundColor: "#EDEDED",
+                  },
+                ]}
+              >
+                <View
                   style={[
-                    tw`absolute top-0 right-2 w-10 h-10 bg-green-400 rounded-full flex items-center justify-center`,
+                    tw`relative my-14`,
                     {
-                      backgroundColor: "#128C7E",
+                      width: "100%",
+                      height: "30%",
                     },
                   ]}
-                  onPress={() => {
-                    setModalVisible(true);
-                    // checkPermission
-                  }}
                 >
-                  <CameraIcon name="camera" size={25} color="#FFFFFF" />
-                </TouchableOpacity>
-              </View>
-            </View>
+                  <View style={[tw`m-auto relative`]}>
+                    <View style={[tw`w-40 h-40 rounded-full`]}>
+                      <Image
+                        source={{
+                          uri: userImage
+                            ? userImage
+                            : `${env.DEV_SERVER_URL}api/v1/users/getImage/defaultProfile.jpg`,
+                        }}
+                        style={[
+                          tw`w-40 h-40 rounded-full`,
+                          {
+                            resizeMode: "cover",
+                          },
+                        ]}
+                      />
+                    </View>
 
-            {/* <View
+                    <TouchableOpacity
+                      style={[
+                        tw`absolute top-0 right-2 w-10 h-10 bg-green-400 rounded-full flex items-center justify-center`,
+                        {
+                          backgroundColor: "#128C7E",
+                        },
+                      ]}
+                      onPress={() => {
+                        setModalVisible(true);
+                        // checkPermission
+                      }}
+                    >
+                      <CameraIcon name="camera" size={25} color="#FFFFFF" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {/* <View
               style={[
                 tw`items-center justify-center`,
                 {
@@ -227,8 +237,99 @@ const CreateGroup = () => {
                 onPress={checkPermission}
               />
             </View> */}
-          </View>
-        </>
+
+                <View style={[tw``]}>
+                  <Text
+                    style={[
+                      tw`text-xl mb-2`,
+                      {
+                        marginLeft: "12%",
+                      },
+                    ]}
+                  >
+                    Group Name
+                  </Text>
+
+                  <TextInput
+                    style={[
+                      tw`p-3 border rounded mx-auto`,
+                      {
+                        width: "75%",
+                      },
+                    ]}
+                    placeholder="Group Name"
+                    value={description}
+                    onChangeText={(text) => {
+                      setDescription(text);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={[
+                      tw`mt-12 mx-auto p-4 rounded`,
+                      {
+                        backgroundColor: "#128C7E",
+                        width: "50%",
+                      },
+                    ]}
+                    onPress={() => {
+                      // console.log({
+                      //   users: checkedUsers,
+                      //   description,
+                      //   file: userImage,
+                      //   Uid: uuid.v4(),
+                      // });
+                      const fData = new FormData();
+                      fData.append("description", description);
+                      fData.append("Uid", uuid.v4());
+                      fData.append("users", checkedUsers);
+                      fData.append("created_by", select.UserData._id);
+                      fData.append("file", userImage);
+
+                      // console.log(fData);
+
+                      let url = `${env.DEV_SERVER_URL}api/v1/group/createGroup`;
+
+                      // axios
+                      //   .post(url, fData, {
+                      //     headers: {
+                      //       "access-token": select.Tokens,
+                      //       "user-id": select.UserData._id,
+                      //     },
+                      //   })
+                      //   .then((res) => {
+                      //     console.log(res.data);
+                      //   })
+                      //   .catch((err) => {
+                      //     console.log(err);
+                      //   });
+
+                      fetch(url, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                          "access-token": select.Tokens,
+                          "user-id": select.UserData._id,
+                        },
+                        body: JSON.stringify(fData),
+                      })
+                        .then((res) => {
+                          console.log(JSON.stringify(res));
+                        })
+
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }}
+                  >
+                    <Text style={[tw`text-white text-center text-xl`]}>
+                      Create Group
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
       ) : (
         <>
           <HeaderTab name="Add Participants" />

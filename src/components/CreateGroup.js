@@ -72,6 +72,45 @@ const CreateGroup = () => {
     }
   };
 
+  const createUserGroup = () => {
+    const formData = new FormData();
+
+    formData.append("file", {
+      uri: userImage,
+      description,
+      users: checkedUsers,
+      created_by: select.UserData._id,
+      Uid: uuid.v4(),
+      type: "image/jpeg",
+    });
+
+    /*
+     uri: userImage,
+      file: userImage,
+      description,
+      users: checkedUsers,
+      created_by: select.UserData._id,
+      Uid: uuid.v4(),
+    */
+    let url = `${env.DEV_SERVER_URL}api/v1/group/createGroupMobile`;
+    try {
+      fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {}
+  };
+
   // console.log(select.Tokens);
   return (
     <>
@@ -271,55 +310,7 @@ const CreateGroup = () => {
                         width: "50%",
                       },
                     ]}
-                    onPress={() => {
-                      // console.log({
-                      //   users: checkedUsers,
-                      //   description,
-                      //   file: userImage,
-                      //   Uid: uuid.v4(),
-                      // });
-                      const fData = new FormData();
-                      fData.append("description", description);
-                      fData.append("Uid", uuid.v4());
-                      fData.append("users", checkedUsers);
-                      fData.append("created_by", select.UserData._id);
-                      fData.append("file", userImage);
-
-                      // console.log(fData);
-
-                      let url = `${env.DEV_SERVER_URL}api/v1/group/createGroup`;
-
-                      // axios
-                      //   .post(url, fData, {
-                      //     headers: {
-                      //       "access-token": select.Tokens,
-                      //       "user-id": select.UserData._id,
-                      //     },
-                      //   })
-                      //   .then((res) => {
-                      //     console.log(res.data);
-                      //   })
-                      //   .catch((err) => {
-                      //     console.log(err);
-                      //   });
-
-                      fetch(url, {
-                        method: "POST",
-                        headers: {
-                          "Content-Type": "application/json",
-                          "access-token": select.Tokens,
-                          "user-id": select.UserData._id,
-                        },
-                        body: JSON.stringify(fData),
-                      })
-                        .then((res) => {
-                          console.log(JSON.stringify(res));
-                        })
-
-                        .catch((err) => {
-                          console.log(err);
-                        });
-                    }}
+                    onPress={createUserGroup}
                   >
                     <Text style={[tw`text-white text-center text-xl`]}>
                       Create Group
